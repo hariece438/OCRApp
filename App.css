@@ -1,0 +1,102 @@
+.Header{
+  text-align: center;
+  background-color: rgb(0, 119, 255);
+  align-items: center;
+  color: white;
+  border: 1px solid black;
+  margin: 10px 5px 10px 5px;
+  font-size: 40px;
+}
+
+.Footer{
+  text-align: center;
+  background-color: rgb(0, 119, 255);
+  align-items: center;
+  color: white;
+  border: 1px solid black;
+  margin: 10px 5px 10px 5px;
+  font-size: 20px;
+}
+
+.ContainerOne{
+  background-color: rgb(54 223 41 / 61%);
+  padding: 300px 100px 300px 50px;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content:space-around;
+  margin: 0 5px 0 5px;
+}
+.ContainerTwo{
+  background-color: rgb(54 223 41 / 61%);
+  padding: 250px 100px 300px 50px;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  margin: 0 5px 0 5px;
+}
+
+.MainContainer{
+  align-items: center;
+  display: flex;
+  background-image: url(/imgTwo.jpg);
+}
+
+body{
+   background-color: rgb(238, 238, 238);
+   height: max-content;
+}
+
+.MainDiv{
+  height:auto;
+}
+
+#drop{
+  margin: 30px 0 0 0;
+}
+
+#but{
+  background-color: green;
+  color: white;
+  padding: 10px;
+  font-size: 20px;
+}
+
+button{
+  background-color: #8100e7;
+  color: white;
+  padding: 10px;
+  margin-left: 10px;
+  font-size: 20px;
+}
+
+#FirstImage{
+  height: 200px;
+  width: 300px;
+}
+
+.heading{
+  color:#000ae7
+}
+
+.overflow{
+  word-wrap: break-word;
+  color: blue;
+  overflow: scroll;
+  width: 300px;
+  height: 200px;
+}
+
+#sid{
+  background-color: #cadcc9;
+  margin: 2px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 1px;
+}
+
+#rawtext{
+  text-align: center;
+  font-size: 20px;
+  color: aliceblue;
+}
