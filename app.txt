@@ -1,0 +1,139 @@
+import "./App.css";
+import React, { useState } from "react";
+import BasicExample from "./BasicExample";
+
+import {
+  DetectDocumentTextCommand,
+  TextractClient,
+} from "@aws-sdk/client-textract";
+
+import { Buffer } from "buffer";
+
+const App = () => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [src, setSrc] = useState("");
+  const [blocks, setBlocks] = useState([]);
+  var data1;
+  const onFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+    setSrc(event.target.files[0]);
+
+    var self = this;
+    var reader = new FileReader();
+    var file = event.target.files[0];
+    reader.onload = (upload) => {
+      setSrc(upload?.target?.result); // No type assertion needed in JS
+    };
+    reader.readAsDataURL(file);
+    console.log("Uploaded");
+  };
+
+  const [data, setData] = useState([]);
+
+  const onFileUpload = async (e) => {
+    const client = new TextractClient({
+      region: "ap-south-1",
+      credentials: {
+        //accessKeyId: "XXXXXXXXXXXXXXXXXXX",
+        //secretAccessKey: "/XXXXXXXXXXXXXXXXX+0va/axAdPcKHRH",
+      },
+    });
+
+    console.log("src", src);
+
+    const blob = new Buffer(src.replace(/^[\w\d;:\/]+base64\,/g, ""), "base64");
+
+    const params = {
+      Document: {
+        Bytes: blob,
+      },
+      FeatureTypes: ["TABLES", "FORMS"],
+    };
+    const formData = new FormData();
+    formData.append("myFile", selectedFile, selectedFile.name);
+    console.log(selectedFile);
+    console.log("document", document);
+
+    const command = new DetectDocumentTextCommand(params);
+    try {
+      data1 = await client.send(command);
+      console.log("data", data1);
+      if (Array.isArray(data1?.Blocks)) {
+        console.log("inside if");
+        setBlocks(data1.Blocks);
+      } else {
+        console.log("inside else");
+        setBlocks([]); // fallback to an empty array
+      }
+      console.log("data", data1);
+    } catch (error) {
+      console.log("err", error);
+    }
+
+    let doc = document.getElementById("MainContainer");
+    var obj = document.createElement("div");
+    obj.className = "ContainerTwo";
+    console.log("length", data1.Blocks.length);
+    var html = "<p id='rawtext'>Raw text</p><div class='overflow'>";
+    for (let i = 0; i < data1.Blocks.length; i++) {
+      if (data1.Blocks[i].Text != null) {
+        html += "<span id='sid'>" + data1.Blocks[i].Text + "</span>";
+      }
+    }
+    html = html + "</div>";
+    doc.appendChild(obj).innerHTML = html;
+  };
+
+  const fileData = () => {
+    if (selectedFile) {
+      return (
+        <div class="ContainerTwo">
+          <h2>File Details:</h2>
+          <p>File Name: {selectedFile.name}</p>
+          <p>File Type: {selectedFile.type}</p>
+          <p>Last Modified: {selectedFile.lastModifiedDate.toDateString()}</p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <br />
+        </div>
+      );
+    }
+  };
+  return (
+    <div id="MainDiv">
+      <div className="Header">
+        <header>
+          <p>
+            <b>Optical Character Recognition Application</b>
+          </p>
+        </header>
+      </div>
+      <div className="MainContainer" id="MainContainer">
+        <div className="ContainerOne">
+          <h3 class="heading">Please Upload File!</h3>
+          <div>
+            <input id="but" type="file" onChange={onFileChange} />
+            <button onClick={onFileUpload}>
+              <b>Upload!</b>
+            </button>
+          </div>
+          <div id="drop">
+            <BasicExample />
+          </div>
+        </div>
+      </div>
+      <div className="Footer">
+        <footer>
+          <p>
+            <p>© 2025 TechWiz. All rights reserved</p>
+          </p>
+        </footer>
+      </div>
+    </div>
+  );
+};
+
+export default App;
